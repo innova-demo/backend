@@ -29,72 +29,72 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.innova.backend.config.AppInitializer;
-import com.innova.backend.config.WebConf;
-import com.innova.backend.controller.EquipoController;
+import com.innova.backend.config.WebConfig;
+import com.innova.backend.controller.TeamController;
 import com.innova.backend.model.Country;
 import com.innova.backend.model.Team;
-import com.innova.backend.service.EquipoService;
+import com.innova.backend.service.TeamService;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
 
-public class EquipoControllerTest {
+public class TeamControllerTest {
 	@Autowired
 	WebApplicationContext context;
 	
     private MockMvc mockMvc;
 
     @Mock
-    private EquipoService equipoService;
+    private TeamService teamService;
 
     @InjectMocks
-    private EquipoController equipoController;
+    private TeamController teamController;
 
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
-        		.standaloneSetup(equipoController)
+        		.standaloneSetup(teamController)
                 .build();
     }
     
     @Test
-    public void test_get_equipo_success() throws Exception {
+    public void test_get_team_success() throws Exception {
         List<Team> teams = Arrays.asList(
-        		new Team((long) 1, "equipo1", new Country((long) 1, "es", "spain"), null, null, null), 
-        		new Team((long) 2, "equipo2", new Country((long) 2, "es", "spain"), null, null, null));	
+        		new Team((long) 1, "team1", new Country((long) 1, "es", "spain"), null, null, null), 
+        		new Team((long) 2, "team2", new Country((long) 2, "es", "spain"), null, null, null));	
         
-        Mockito.when(equipoService.list()).thenReturn(teams);
+        Mockito.when(teamService.list()).thenReturn(teams);
         
-        mockMvc.perform(MockMvcRequestBuilders.get("/equipo"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/team"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", is("equipo1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", is("team1")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id", is(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name", is("equipo2")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name", is("team2")));
 
         
-        Mockito.verify(equipoService, Mockito.times(1)).list(); 
-        Mockito.verifyNoMoreInteractions(equipoService);
+        Mockito.verify(teamService, Mockito.times(1)).list(); 
+        Mockito.verifyNoMoreInteractions(teamService);
     }
     
     @Test
-    public void test_post_equipo_success() throws Exception {
-        Team team = new Team((long) 1, "equipo1", null, null, null, null);
+    public void test_post_team_success() throws Exception {
+        Team team = new Team((long) 1, "team1", null, null, null, null);
         
-        Mockito.when(equipoService.save(team)).thenReturn((long) 1);
+        Mockito.when(teamService.save(team)).thenReturn((long) 1);
         
-        mockMvc.perform(MockMvcRequestBuilders.post("/equipo")
+        mockMvc.perform(MockMvcRequestBuilders.post("/team")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(asJsonString(team)))
                 		.andExpect(MockMvcResultMatchers.status().isCreated());
 
-        verify(equipoService, times(1)).save(team);
-        verifyNoMoreInteractions(equipoService);
+        verify(teamService, times(1)).save(team);
+        verifyNoMoreInteractions(teamService);
     }
 
     public static String asJsonString(final Object obj) {

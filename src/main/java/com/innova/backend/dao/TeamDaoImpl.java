@@ -10,48 +10,45 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.innova.backend.model.Country;
+import com.innova.backend.model.Team;
 
 @Repository
-public class PaisDaoImpl implements PaisDao {
+public class TeamDaoImpl implements TeamDao {
 
    @Autowired
    private SessionFactory sessionFactory;
 
    @Override
-   public long save(Country pais) {
-      sessionFactory.getCurrentSession().save(pais);
-      return pais.getId();
+   public long save(Team equipo) {
+      sessionFactory.getCurrentSession().saveOrUpdate(equipo);
+      return equipo.getId();
    }
 
    @Override
-   public Country get(long id) {
-      return sessionFactory.getCurrentSession().get(Country.class, id);
+   public Team get(long id) {
+      return sessionFactory.getCurrentSession().get(Team.class, id);
    }
 
    @Override
-   public List<Country> list() {
+   public List<Team> list() {
       Session session = sessionFactory.getCurrentSession();
       CriteriaBuilder cb = session.getCriteriaBuilder();
-      CriteriaQuery<Country> cq = cb.createQuery(Country.class);
-      Root<Country> root = cq.from(Country.class);
+      CriteriaQuery<Team> cq = cb.createQuery(Team.class);
+      Root<Team> root = cq.from(Team.class);
       cq.select(root);
-      Query<Country> query = session.createQuery(cq);
+      Query<Team> query = session.createQuery(cq);
       return query.getResultList();
    }
 
    @Override
-   public void update(long id, Country equipo) {
-      Session session = sessionFactory.getCurrentSession();
-      Country equipo2 = session.byId(Country.class).load(id);
-      equipo2.setName(equipo.getName());
-      session.flush();
+   public void update(long id, Team equipo) {
+      sessionFactory.getCurrentSession().saveOrUpdate(equipo);
    }
 
    @Override
    public void delete(long id) {
       Session session = sessionFactory.getCurrentSession();
-      Country equipo = session.byId(Country.class).load(id);
+      Team equipo = session.byId(Team.class).load(id);
       session.delete(equipo);
    }
 

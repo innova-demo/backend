@@ -23,13 +23,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.innova.backend.exception.CustomApiException;
 import com.innova.backend.model.Team;
-import com.innova.backend.service.EquipoService;
+import com.innova.backend.service.TeamService;
 
 @RestController
-public class EquipoController {
+public class TeamController {
 
    @Autowired
-   private EquipoService equipoService;
+   private TeamService teamService;
 
    @ExceptionHandler(RuntimeException.class)
    public ResponseEntity<String> RuntimeExceptionHandler(RuntimeException e) {
@@ -41,39 +41,39 @@ public class EquipoController {
 	   return new ResponseEntity<String>(ex.toString(), HttpStatus.BAD_REQUEST);
    }
    
-   @GetMapping("/equipo")
+   @GetMapping("/team")
    public ResponseEntity<List<Team>> list() {
-      List<Team> equipos = equipoService.list();
-      return ResponseEntity.ok().body(equipos);
+      List<Team> teams = teamService.list();
+      return ResponseEntity.ok().body(teams);
    }
 
-   @PostMapping(path = "/equipo")
-   public ResponseEntity<?> save(@RequestBody Team equipo) {
+   @PostMapping(path = "/team")
+   public ResponseEntity<?> save(@RequestBody Team team) {
 		  System.out.println("---> save!!");;
-		  System.out.println("---> equipo: " + equipo.toString());;
-      long id = equipoService.save(equipo);
+		  System.out.println("---> team: " + team.toString());;
+      long id = teamService.save(team);
       final URI location = ServletUriComponentsBuilder
-              .fromCurrentServletMapping().path("/equipo/{id}")
+              .fromCurrentServletMapping().path("/team/{id}")
               .build()
               .expand(id)
               .toUri();
       return ResponseEntity.created(location).body(id);
    }
    
-   @PutMapping("/equipo/{id}")
-   public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Team equipo) {
+   @PutMapping("/team/{id}")
+   public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Team team) {
 		  System.out.println("---> update!!");
-		  System.out.println("---> equipo.id: " + id + ", equipo.country: " + equipo.getCountry().getId() + ", " + equipo.getCountry().getName());
+		  System.out.println("---> team.id: " + id + ", team.country: " + team.getCountry().getId() + ", " + team.getCountry().getName());
 		  
-      equipoService.update(id, equipo);
-      return ResponseEntity.ok().body(equipo);
+      teamService.update(id, team);
+      return ResponseEntity.ok().body(team);
    }
 
-   @DeleteMapping("/equipo/{id}")
+   @DeleteMapping("/team/{id}")
    public ResponseEntity<?> delete(@PathVariable("id") long id) {
 		  System.out.println("---> delete!!");
-		  System.out.println("---> equipo.id: " + id);
-      equipoService.delete(id);
+		  System.out.println("---> team.id: " + id);
+      teamService.delete(id);
       return ResponseEntity.ok().body("");
    }
 }

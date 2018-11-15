@@ -6,42 +6,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.innova.backend.dao.PaisDao;
-import com.innova.backend.model.Country;
+import com.innova.backend.dao.TeamDao;
+import com.innova.backend.model.Team;
 
 @Service
 @Transactional(readOnly = true)
-public class PaisServiceImpl implements PaisService {
+public class TeamServiceImpl implements TeamService {
 
    @Autowired
-   private PaisDao paisDao;
+   private TeamDao teamDao;
 
    @Transactional
    @Override
-   public long save(Country pais) {
-      return paisDao.save(pais);
+   public long save(Team team) {
+      return teamDao.save(team);
    }
 
    @Override
-   public Country get(long id) {
-      return paisDao.get(id);
+   public Team get(long id) {
+      return teamDao.get(id);
    }
 
    @Override
-   public List<Country> list() {
-      return paisDao.list();
+   public List<Team> list() {
+      return teamDao.list();
    }
 
    @Transactional
    @Override
-   public void update(long id, Country pais) {
-      paisDao.update(id, pais);
+   public void update(long id, Team team) {
+      teamDao.update(id, team);
    }
 
    @Transactional
    @Override
    public void delete(long id) {
-      paisDao.delete(id);
+      teamDao.delete(id);
    }
 
 }

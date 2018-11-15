@@ -12,8 +12,12 @@ import javax.persistence.Lob;
 import javax.persistence.ForeignKey;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innova.backend.model.Country;
 
 @Entity(name = "Team")
@@ -24,23 +28,25 @@ public class Team {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	@Size(min = 4, max = 24)
+	@NotNull(message="Name required")
+	@Length(min=4, max=24, message="Length between 4 and 24")
 	private String name;
-
+	
+	@NotNull(message="Country required")
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "FK_COUNTRY"), name = "countryid", referencedColumnName = "id", nullable = false)
+	@JoinColumn(foreignKey = @ForeignKey(name = "FK_COUNTRY"), name = "countryid", referencedColumnName = "id")
 	private Country country;
 
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "FK_TEAM_RIVAL"), name = "teamrivalid", referencedColumnName = "id", nullable = true)
+	@JoinColumn(foreignKey = @ForeignKey(name = "FK_TEAM_RIVAL"), name = "teamrivalid", referencedColumnName = "id")
+	@JsonIgnore
 	private Team teamrival;
 
-    @Column(name="shieldfilename", length=100, nullable=true)
+    @Column(name="shieldfilename")
     private String shieldfilename;
     
     @Lob
-    @Column(name="shieldfile", nullable=true)
+    @Column(name="shieldfile")
     private String shieldfile;
 
     // getters and setters

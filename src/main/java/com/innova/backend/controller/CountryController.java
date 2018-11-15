@@ -14,36 +14,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.innova.backend.model.Country;
-import com.innova.backend.service.PaisService;
+import com.innova.backend.service.CountryService;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
-public class PaisController {
+public class CountryController {
 
    @Autowired
-   private PaisService paisService;
+   private CountryService countryService;
 
-   @GetMapping("/pais")
+   @GetMapping("/country")
    public ResponseEntity<List<Country>> list() {
-      List<Country> equipos = paisService.list();
+      List<Country> equipos = countryService.list();
       return ResponseEntity.ok().body(equipos);
    }
 
-   @PostMapping("/pais")
+   @PostMapping("/country")
    public ResponseEntity<?> save(@RequestBody Country equipo) {
-      long id = paisService.save(equipo);
-      return ResponseEntity.ok().body("New Pais has been saved with ID:" + id);
+      long id = countryService.save(equipo);
+      return ResponseEntity.ok().body("New Country has been saved with ID:" + id);
    }
    
-   @PutMapping("/pais/{id}")
+   @PutMapping("/country/{id}")
    public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Country equipo) {
-      paisService.update(id, equipo);
-      return ResponseEntity.ok().body("Pais has been updated successfully.");
+      countryService.update(id, equipo);
+      return ResponseEntity.ok().body("Country has been updated successfully.");
    }
 
-   @DeleteMapping("/pais/{id}")
+   @DeleteMapping("/country/{id}")
    public ResponseEntity<?> delete(@PathVariable("id") long id) {
-      paisService.delete(id);
-      return ResponseEntity.ok().body("Pais has been deleted successfully.");
+      countryService.delete(id);
+      return ResponseEntity.ok().body("Country has been deleted successfully.");
    }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.innova.backend.model.Team;
 
-public interface EquipoDao {
+public interface TeamDao {
 
    long save(Team equipo);
    Team get(long id);

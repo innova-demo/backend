@@ -16,8 +16,10 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	  super.onStartup(servletContext);
 	  ServletRegistration.Dynamic servlet = servletContext
 	    .addServlet("h2-console", new WebServlet());
+	  servlet.setInitParameter("webAllowOthers", "true");
 	  servlet.setLoadOnStartup(2);
 	  servlet.addMapping("/console/*");
+	  
 	}
 	
    @Override
@@ -27,7 +29,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
    @Override
    protected Class<?>[] getServletConfigClasses() {
-      return new Class[] { WebConf.class };
+      return new Class[] { WebConfig.class };
    }
 
    @Override

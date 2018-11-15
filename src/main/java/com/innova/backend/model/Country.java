@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "Country")
 @Table(name = "tbl_countries")
@@ -15,10 +16,11 @@ public class Country {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, length = 2)
+	@NotNull
+	@Column(length = 2)
 	private String code;
 
-	@Column(nullable = false)
+	@NotNull
 	private String name;
 
     // getters and setters

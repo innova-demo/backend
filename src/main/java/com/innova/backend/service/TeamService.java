@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.innova.backend.model.Team;
 
-public interface EquipoService {
+public interface TeamService {
 
-   long save(Team equipo);
+   long save(Team team);
    Team get(long id);
    List<Team> list();
-   void update(long id, Team equipo);
+   void update(long id, Team team);
    void delete(long id);
 }
