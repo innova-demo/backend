@@ -15,7 +15,7 @@
         <spring.version>4.3.10.RELEASE</spring.version>
         <javax.version>3.1.0</javax.version>
         <hibernate.version>5.3.7.Final</hibernate.version>
-        <hibernate-validator.version>5.4.2.FINAL</hibernate-validator.version>
+        <hibernate-validator.version>5.4.2.Final</hibernate-validator.version>
         <c3po.version>0.9.5.2</c3po.version>
         <jackson.version>2.9.7</jackson.version>
         <junit.version>4.12</junit.version>
