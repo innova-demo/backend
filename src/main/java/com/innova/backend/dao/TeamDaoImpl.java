@@ -10,6 +10,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.innova.backend.exception.CustomApiException;
+import com.innova.backend.model.Champion;
 import com.innova.backend.model.Team;
 
 @Repository
@@ -41,6 +43,13 @@ public class TeamDaoImpl implements TeamDao {
    }
 
    @Override
+   public List<Champion> championList(long id) {
+	   Session session = sessionFactory.getCurrentSession();
+	   Team team = session.byId(Team.class).load(id);
+	   return team.getChampions();      
+   }
+
+   @Override
    public void update(long id, Team equipo) {
       sessionFactory.getCurrentSession().saveOrUpdate(equipo);
    }
@@ -48,8 +57,8 @@ public class TeamDaoImpl implements TeamDao {
    @Override
    public void delete(long id) {
       Session session = sessionFactory.getCurrentSession();
-      Team equipo = session.byId(Team.class).load(id);
-      session.delete(equipo);
+      Team team = session.byId(Team.class).load(id);
+      session.delete(team);
    }
 
 }

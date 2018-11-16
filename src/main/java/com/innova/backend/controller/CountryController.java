@@ -1,5 +1,6 @@
 package com.innova.backend.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.innova.backend.model.Country;
 import com.innova.backend.service.CountryService;
@@ -25,25 +27,30 @@ public class CountryController {
 
    @GetMapping("/country")
    public ResponseEntity<List<Country>> list() {
-      List<Country> equipos = countryService.list();
-      return ResponseEntity.ok().body(equipos);
+      List<Country> countries = countryService.list();
+      return ResponseEntity.ok().body(countries);
    }
 
    @PostMapping("/country")
-   public ResponseEntity<?> save(@RequestBody Country equipo) {
-      long id = countryService.save(equipo);
-      return ResponseEntity.ok().body("New Country has been saved with ID:" + id);
+   public ResponseEntity<?> save(@RequestBody Country country) {
+      long id = countryService.save(country);
+      final URI location = ServletUriComponentsBuilder
+              .fromCurrentServletMapping().path("/country/{id}")
+              .build()
+              .expand(id)
+              .toUri();
+      return ResponseEntity.created(location).body(id);
    }
    
    @PutMapping("/country/{id}")
-   public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Country equipo) {
-      countryService.update(id, equipo);
-      return ResponseEntity.ok().body("Country has been updated successfully.");
+   public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Country country) {
+      countryService.update(id, country);
+      return ResponseEntity.ok().body(country);
    }
 
    @DeleteMapping("/country/{id}")
    public ResponseEntity<?> delete(@PathVariable("id") long id) {
       countryService.delete(id);
-      return ResponseEntity.ok().body("Country has been deleted successfully.");
+      return ResponseEntity.ok().body("");
    }
 }

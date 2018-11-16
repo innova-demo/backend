@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.innova.backend.exception.CustomApiException;
+import com.innova.backend.model.Champion;
 import com.innova.backend.model.Team;
 import com.innova.backend.service.TeamService;
 
@@ -34,10 +35,8 @@ public class TeamController {
    @ExceptionHandler(RuntimeException.class)
    public ResponseEntity<String> RuntimeExceptionHandler(RuntimeException e) {
 	   System.out.println("--ª Exception: " + e.getMessage());
-
-	   CustomApiException ex = new CustomApiException();
-	   ex.setCode("000");
-	   ex.setMessage(e.getMessage());
+	   e.printStackTrace();
+	   CustomApiException ex = new CustomApiException("000", e.getMessage());
 	   return new ResponseEntity<String>(ex.toString(), HttpStatus.BAD_REQUEST);
    }
    
@@ -45,6 +44,12 @@ public class TeamController {
    public ResponseEntity<List<Team>> list() {
       List<Team> teams = teamService.list();
       return ResponseEntity.ok().body(teams);
+   }
+
+   @GetMapping("/team/{id}/champion")
+   public ResponseEntity<List<Champion>> championList(@PathVariable("id") long id) {
+      List<Champion> champions = teamService.championList(id);
+      return ResponseEntity.ok().body(champions);
    }
 
    @PostMapping(path = "/team")
@@ -59,7 +64,20 @@ public class TeamController {
               .toUri();
       return ResponseEntity.created(location).body(id);
    }
-   
+
+   @PostMapping(path = "/team/{id}/champion")
+   public ResponseEntity<?> saveChampion(@PathVariable("id") long id, @RequestBody Champion champion) {
+		  System.out.println("---> saveChampion!!");;
+		  System.out.println("---> team.id: " + id + ", champion: " + champion.toString());;
+      long champion_id = teamService.saveChampion(id, champion);
+      final URI location = ServletUriComponentsBuilder
+              .fromCurrentServletMapping().path("/team/{id}/champion")
+              .build()
+              .expand(id)
+              .toUri();
+      return ResponseEntity.created(location).body(champion_id);
+   }
+
    @PutMapping("/team/{id}")
    public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Team team) {
 		  System.out.println("---> update!!");

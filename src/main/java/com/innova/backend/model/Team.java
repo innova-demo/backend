@@ -1,6 +1,10 @@
 package com.innova.backend.model;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ForeignKey;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,6 +23,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.innova.backend.model.Country;
 
 @Entity(name = "Team")
@@ -49,8 +55,83 @@ public class Team {
     @Column(name="shieldfile")
     private String shieldfile;
 
-    // getters and setters
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy="team")
+    private List<Champion> champions;
     
+    // getters and setters
+   
+	public Team(Long id, String name, Country country, Team teamrival, String shieldfilename, String shieldfile) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.country = country;
+		this.teamrival = teamrival;
+		this.shieldfilename = shieldfilename;
+		this.shieldfile = shieldfile;
+	}
+    
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((champions == null) ? 0 : champions.hashCode());
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((shieldfile == null) ? 0 : shieldfile.hashCode());
+		result = prime * result + ((shieldfilename == null) ? 0 : shieldfilename.hashCode());
+		result = prime * result + ((teamrival == null) ? 0 : teamrival.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Team other = (Team) obj;
+		if (champions == null) {
+			if (other.champions != null)
+				return false;
+		} else if (!champions.equals(other.champions))
+			return false;
+		if (country == null) {
+			if (other.country != null)
+				return false;
+		} else if (!country.equals(other.country))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (shieldfile == null) {
+			if (other.shieldfile != null)
+				return false;
+		} else if (!shieldfile.equals(other.shieldfile))
+			return false;
+		if (shieldfilename == null) {
+			if (other.shieldfilename != null)
+				return false;
+		} else if (!shieldfilename.equals(other.shieldfilename))
+			return false;
+		if (teamrival == null) {
+			if (other.teamrival != null)
+				return false;
+		} else if (!teamrival.equals(other.teamrival))
+			return false;
+		return true;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -99,81 +180,15 @@ public class Team {
 		this.shieldfile = shieldfile;
 	}
 
-	@Override
-	public String toString() {
-		return "Team [id=" + id + ", name=" + name + ", country=" + country + ", teamrival=" + teamrival
-				+ ", shieldfilename=" + shieldfilename + ", shieldfile=" + shieldfile + "]";
+	public List<Champion> getChampions() {
+		return champions;
 	}
 
-	public Team(Long id, String name, Country country, Team teamrival, String shieldfilename, String shieldfile) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.country = country;
-		this.teamrival = teamrival;
-		this.shieldfilename = shieldfilename;
-		this.shieldfile = shieldfile;
+	public void setChampions(List<Champion> champions) {
+		this.champions = champions;
 	}
-    
-	public Team() {
+
+	public Team() {	
+	}
 		
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((country == null) ? 0 : country.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((shieldfile == null) ? 0 : shieldfile.hashCode());
-		result = prime * result + ((shieldfilename == null) ? 0 : shieldfilename.hashCode());
-		result = prime * result + ((teamrival == null) ? 0 : teamrival.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Team other = (Team) obj;
-		if (country == null) {
-			if (other.country != null)
-				return false;
-		} else if (!country.equals(other.country))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (shieldfile == null) {
-			if (other.shieldfile != null)
-				return false;
-		} else if (!shieldfile.equals(other.shieldfile))
-			return false;
-		if (shieldfilename == null) {
-			if (other.shieldfilename != null)
-				return false;
-		} else if (!shieldfilename.equals(other.shieldfilename))
-			return false;
-		if (teamrival == null) {
-			if (other.teamrival != null)
-				return false;
-		} else if (!teamrival.equals(other.teamrival))
-			return false;
-		return true;
-	}
-	
-	
-	
 }

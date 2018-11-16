@@ -21,5 +21,6 @@
         
         <mapping class="com.innova.backend.model.Team"/>
         <mapping class="com.innova.backend.model.Country"/>
+        <mapping class="com.innova.backend.model.Champion"/>        
     </session-factory>
 </hibernate-configuration>
