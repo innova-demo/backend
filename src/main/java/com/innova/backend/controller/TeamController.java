@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,8 +43,9 @@ public class TeamController {
    }
    
    @GetMapping("/team")
-   public ResponseEntity<List<Team>> list() {
+   public ResponseEntity<List<Team>> list(@RequestHeader HttpHeaders headers) {
       List<Team> teams = teamService.list();
+      System.out.println("X-JWT-Assertion: " + headers.get("X-JWT-Assertion"));
       return ResponseEntity.ok().body(teams);
    }
 
