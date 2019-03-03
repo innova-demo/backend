@@ -27,6 +27,7 @@ import com.innova.backend.exception.CustomApiException;
 import com.innova.backend.model.Champion;
 import com.innova.backend.model.Team;
 import com.innova.backend.service.TeamService;
+import com.innova.backend.utils.JWTUtils;
 
 @RestController
 public class TeamController {
@@ -43,9 +44,10 @@ public class TeamController {
    }
    
    @GetMapping("/team")
-   public ResponseEntity<List<Team>> list(@RequestHeader HttpHeaders headers) {
+   public ResponseEntity<List<Team>> list(@RequestHeader HttpHeaders headers) throws Exception {
       List<Team> teams = teamService.list();
       System.out.println("X-JWT-Assertion: " + headers.get("X-JWT-Assertion"));
+      JWTUtils.decoded(headers.get("X-JWT-Assertion").toString());
       return ResponseEntity.ok().body(teams);
    }
 
