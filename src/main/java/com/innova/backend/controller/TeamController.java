@@ -47,7 +47,7 @@ public class TeamController {
    public ResponseEntity<List<Team>> list(@RequestHeader HttpHeaders headers) throws Exception {
       List<Team> teams = teamService.list();
       System.out.println("X-JWT-Assertion: " + headers.get("X-JWT-Assertion"));
-      JWTUtils.decoded(headers.get("X-JWT-Assertion").toString());
+      JWTUtils.decoded(headers.get("X-JWT-Assertion").get(0));
       return ResponseEntity.ok().body(teams);
    }
 
