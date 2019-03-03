@@ -5,13 +5,17 @@ import java.util.Base64;
 
 import org.apache.commons.logging.Log;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
+
 public class JWTUtils {
 
     public static void decoded(String JWTEncoded) throws Exception {
         try {
             String[] split = JWTEncoded.split("\\.");
             System.out.println("JWT_DECODED Header: " + getJson(split[0]));
-            System.out.println("JWT_DECODED Body: " + getJson(split[1]));
+            System.out.println("JWT_DECODED Body:");
+            System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(new JsonParser().parse(getJson(split[1]))));
         } catch (UnsupportedEncodingException e) {
             //Error
         }
